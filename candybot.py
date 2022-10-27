@@ -65,7 +65,7 @@ def measured_distance():
 def person_detected():
   dist = measured_distance()
   # Distance in cm
-  if dist > 15 or dist < 160:
+  if dist > 20 and dist < 160:
     print(f'Person detected at {dist} cm')
     return True
   return False
@@ -110,4 +110,5 @@ if __name__ == '__main__':
     main()
   except KeyboardInterrupt:
     print(f'Stopped by userr')
+  finally:
     GPIO.cleanup()
