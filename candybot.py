@@ -59,6 +59,7 @@ def measured_distance():
   while GPIO.input(echo) == 1:
     stop_time = time.time()
 
+  time_delta = stop_time - start_time
   return round(time_delta * 34300 / 2, 2)
 
 def person_detected():
