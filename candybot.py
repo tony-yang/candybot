@@ -9,7 +9,8 @@ trigger = 31 # Ultrasonic trigger (GPIO 6)
 echo = 29 # Ultrasonic echo (GPIO 5)
 r = sr.Recognizer()
 
-
+def home_calibration():
+  backward()
 
 def init_hardware():
   GPIO.setmode(GPIO.BOARD)
@@ -18,6 +19,7 @@ def init_hardware():
   GPIO.setup(in2, GPIO.OUT)
   GPIO.setup(trigger, GPIO.OUT)
   GPIO.setup(echo, GPIO.IN)
+  home_calibration()
 
 def enable_motor():
   GPIO.output(enable, GPIO.HIGH)
@@ -25,15 +27,19 @@ def enable_motor():
 def disable_motor():
   GPIO.output(enable, GPIO.LOW)
 
-def backward():
+def forward():
+  enable_motor()
   GPIO.output(in1, GPIO.HIGH)
   GPIO.output(in2, GPIO.LOW)
-  time.sleep(10)
+  time.sleep(2.6)
+  disable_motor()
 
-def forward():
+def backward():
+  enable_motor()
   GPIO.output(in1, GPIO.LOW)
   GPIO.output(in2, GPIO.HIGH)
-  time.sleep(10)
+  time.sleep(4)
+  disable_motor()
 
 def measured_distance():
   GPIO.output(trigger, False)
@@ -66,17 +72,15 @@ def person_detected():
 def send_candy(text: str):
   if 'trick' in text or 'treat' in text or len(text) > 8:
     print(f'Send Candy')
-    enable_motor()
     forward()
     backward()
-    disable_motor()
   else:
     print(f'False Detection, no candy')
 
 def main():
   init_hardware()
   while True:
-    time.sleep(10)
+    time.sleep(8)
     print(f'\n\n####################################')
     while not person_detected():
       time.sleep(1)
