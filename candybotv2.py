@@ -1,3 +1,5 @@
+from playsound import playsound
+import random
 import RPi.GPIO as GPIO
 import time
 
@@ -6,6 +8,15 @@ in1 = 37 # Motor input 1 (GPIO 26)
 in2 = 36 # Motor input 2 (GPIO 16)
 trigger = 31 # Ultrasonic trigger (GPIO 6)
 echo = 29 # Ultrasonic echo (GPIO 5)
+
+SOUNDS = {
+  1: '01_happy_halloween.mp3',
+  2: '02_happy_halloween2.mp3',
+  3: '03_magic_words.mp3',
+  4: '04_trick_treat.mp3',
+  5: '05_candy.mp3',
+  6: '06_candy2.mp3',
+}
 
 def init_hardware():
   GPIO.setmode(GPIO.BOARD)
@@ -52,14 +63,38 @@ def measured_distance():
 def person_detected():
   dist = measured_distance()
   # Distance in cm
-  if dist > 20 and dist < 160:
+  if dist > 10 and dist < 160:
     print(f'Person detected at {dist} cm')
     return True
   return False
 
+def choose_sound_track():
+  return random.randint(1,len(SOUNDS))
+
+def play_sound():
+  pass
+
 def send_candy():
+  sound_num = choose_sound_track()
   print(f'Send Candy')
-  forward()
+  if sound_num == 1:
+    play_sound()
+    forward()
+  elif sound_num == 2:
+    play_sound()
+    forward()
+  elif sound_num == 3:
+    play_sound()
+    forward()
+  elif sound_num == 4:
+    play_sound()
+    forward()
+  elif sound_num == 5:
+    play_sound()
+    forward()
+  elif sound_num == 6:
+    play_sound()
+    forward()
 
 def main():
   init_hardware()
@@ -67,7 +102,7 @@ def main():
     time.sleep(8)
     print(f'\n\n####################################')
     while not person_detected():
-      time.sleep(2)
+      time.sleep(1)
 
     try:
       send_candy()
