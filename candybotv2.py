@@ -1,4 +1,4 @@
-from playsound import playsound
+import pygame
 import random
 import RPi.GPIO as GPIO
 import time
@@ -8,6 +8,7 @@ in1 = 37 # Motor input 1 (GPIO 26)
 in2 = 36 # Motor input 2 (GPIO 16)
 trigger = 31 # Ultrasonic trigger (GPIO 6)
 echo = 29 # Ultrasonic echo (GPIO 5)
+pygame.init()
 
 SOUNDS = {
   1: '01_happy_halloween.mp3',
@@ -33,6 +34,7 @@ def disable_motor():
   GPIO.output(enable, GPIO.LOW)
 
 def forward():
+  print(f'Send candy')
   enable_motor()
   GPIO.output(in1, GPIO.HIGH)
   GPIO.output(in2, GPIO.LOW)
@@ -42,7 +44,7 @@ def forward():
 def measured_distance():
   GPIO.output(trigger, False)
   print(f'Waiting for sensor to settle')
-  time.sleep(2)
+  time.sleep(1)
 
   GPIO.output(trigger, GPIO.HIGH)
   time.sleep(0.00001)
@@ -71,29 +73,32 @@ def person_detected():
 def choose_sound_track():
   return random.randint(1,len(SOUNDS))
 
-def play_sound():
-  pass
+def play_sound(num):
+  sound_file = f'/home/tt/candybot/{SOUNDS[num]}'
+  print(f'Play sound {num} with file ({sound_file})')
+  sound = pygame.mixer.Sound(sound_file)
+  sound.play()
 
 def send_candy():
   sound_num = choose_sound_track()
-  print(f'Send Candy')
+  play_sound(sound_num)
   if sound_num == 1:
-    play_sound()
+    time.sleep(12)
     forward()
   elif sound_num == 2:
-    play_sound()
+    time.sleep(8)
     forward()
   elif sound_num == 3:
-    play_sound()
+    time.sleep(11)
     forward()
   elif sound_num == 4:
-    play_sound()
+    time.sleep(9)
     forward()
   elif sound_num == 5:
-    play_sound()
+    time.sleep(8)
     forward()
   elif sound_num == 6:
-    play_sound()
+    time.sleep(12)
     forward()
 
 def main():
