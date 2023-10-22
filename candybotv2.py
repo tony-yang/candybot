@@ -38,7 +38,7 @@ def forward():
   enable_motor()
   GPIO.output(in1, GPIO.HIGH)
   GPIO.output(in2, GPIO.LOW)
-  time.sleep(3)
+  time.sleep(1.3)
   disable_motor()
 
 def measured_distance():
